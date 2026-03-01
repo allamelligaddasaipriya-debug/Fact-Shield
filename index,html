@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Resume Builder</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+  <h1>Resume Builder</h1>
+
+  <div class="form">
+    <input type="text" id="name" placeholder="Full Name">
+    <input type="text" id="email" placeholder="Email">
+    <input type="text" id="phone" placeholder="Phone Number">
+    <textarea id="summary" placeholder="Profile Summary"></textarea>
+    <textarea id="education" placeholder="Education"></textarea>
+    <textarea id="skills" placeholder="Skills (comma separated)"></textarea>
+    <textarea id="experience" placeholder="Experience"></textarea>
+
+    <button onclick="generateResume()">Generate Resume</button>
+    <button onclick="downloadPDF()">Download PDF</button>
+  </div>
+
+  <div class="resume" id="resume">
+    <h2 id="r-name"></h2>
+    <p id="r-email"></p>
+    <p id="r-phone"></p>
+    <hr>
+    <h3>Profile</h3>
+    <p id="r-summary"></p>
+    <h3>Education</h3>
+    <p id="r-education"></p>
+    <h3>Skills</h3>
+    <ul id="r-skills"></ul>
+    <h3>Experience</h3>
+    <p id="r-experience"></p>
+  </div>
+</div>
+
+<script src="script.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+</body>
+</html>
+body {
+  font-family: Arial, sans-serif;
+  background: #f4f4f4;
+}
+
+.container {
+  width: 90%;
+  margin: auto;
+  display: flex;
+  gap: 20px;
+}
+
+h1 {
+  text-align: center;
+  width: 100%;
+}
+
+.form, .resume {
+  background: #fff;
+  padding: 20px;
+  width: 50%;
+  border-radius: 8px;
+}
+
+input, textarea {
+  width: 100%;
+  margin: 8px 0;
+  padding: 10px;
+}
+
+button {
+  padding: 10px;
+  margin: 5px;
+  background: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.resume h2 {
+  color: #007bff;
+}
+function generateResume() {
+  document.getElementById("r-name").innerText =
+    document.getElementById("name").value;
+
+  document.getElementById("r-email").innerText =
+    document.getElementById("email").value;
+
+  document.getElementById("r-phone").innerText =
+    document.getElementById("phone").value;
+
+  document.getElementById("r-summary").innerText =
+    document.getElementById("summary").value;
+
+  document.getElementById("r-education").innerText =
+    document.getElementById("education").value;
+
+  document.getElementById("r-experience").innerText =
+    document.getElementById("experience").value;
+
+  let skills = document.getElementById("skills").value.split(",");
+  let skillsList = document.getElementById("r-skills");
+  skillsList.innerHTML = "";
+
+  skills.forEach(skill => {
+    let li = document.createElement("li");
+    li.innerText = skill.trim();
+    skillsList.appendChild(li);
+  });
+}
+
+function downloadPDF() {
+  const resume = document.getElementById("resume");
+  html2pdf().from(resume).save("My_Resume.pdf");
+}
